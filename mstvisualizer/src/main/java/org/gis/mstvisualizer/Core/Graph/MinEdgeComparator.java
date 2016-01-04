@@ -1,4 +1,4 @@
-package org.gis.mstvisualizer.Graph;
+package org.gis.mstvisualizer.Core.Graph;
 
 import java.util.Comparator;
 

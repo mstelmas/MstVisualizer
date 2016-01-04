@@ -1,8 +1,8 @@
-package org.gis.mstvisualizer.Algorithms;
+package org.gis.mstvisualizer.Core.Algorithms;
 
-import org.gis.mstvisualizer.Graph.Edge;
-import org.gis.mstvisualizer.Graph.WeightedGraph;
-import org.gis.mstvisualizer.IndexMinPriorityQueue;
+import org.gis.mstvisualizer.Core.Graph.Edge;
+import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
+import org.gis.mstvisualizer.Core.IndexMinPriorityQueue;
 
 public class PrimMST extends AlgorithmMST {
 

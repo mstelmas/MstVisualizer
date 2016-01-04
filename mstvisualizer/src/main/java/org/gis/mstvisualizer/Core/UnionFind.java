@@ -1,4 +1,4 @@
-package org.gis.mstvisualizer;
+package org.gis.mstvisualizer.Core;
 
 import lombok.Getter;
 
