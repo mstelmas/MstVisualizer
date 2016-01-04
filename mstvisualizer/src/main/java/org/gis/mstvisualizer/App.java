@@ -3,6 +3,7 @@ package org.gis.mstvisualizer;
 
 import org.gis.mstvisualizer.Algorithms.AlgorithmMST;
 import org.gis.mstvisualizer.Algorithms.KruskalMST;
+import org.gis.mstvisualizer.Algorithms.PrimMST;
 import org.gis.mstvisualizer.Graph.Edge;
 import org.gis.mstvisualizer.Graph.WeightedGraph;
 
@@ -37,5 +38,14 @@ public class App
         System.out.println("List of edges in MST: ");
 
         algorithmMST.edges().forEach(System.out::println);
+
+
+        final AlgorithmMST algorithmMST2 = new PrimMST(g);
+
+        System.out.println("MST by Prim: ");
+        System.out.println("Size: " + algorithmMST2.getWeight());
+        System.out.println("List of edges in MST: ");
+
+        algorithmMST2.edges().forEach(System.out::println);
     }
 }

@@ -32,9 +32,4 @@ public class KruskalMST extends AlgorithmMST {
             }
         }
     }
-
-    @Override
-    public Iterable<Edge> edges() {
-        return mst;
-    }
 }

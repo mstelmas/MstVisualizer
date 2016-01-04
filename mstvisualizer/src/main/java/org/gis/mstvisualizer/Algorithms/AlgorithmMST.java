@@ -12,5 +12,7 @@ public abstract class AlgorithmMST {
 
     protected Queue<Edge> mst = new LinkedList<Edge>();
 
-    public abstract Iterable<Edge> edges();
+    public Iterable<Edge> edges() {
+        return mst;
+    }
 }
