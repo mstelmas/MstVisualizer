@@ -3,7 +3,7 @@ package org.gis.mstvisualizer.Core.Algorithms;
 import org.gis.mstvisualizer.Core.Graph.Edge;
 import org.gis.mstvisualizer.Core.Graph.MinEdgeComparator;
 import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
-import org.gis.mstvisualizer.Core.Simulation.Events.AddEdgeToMstEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexVisitedEvent;
 

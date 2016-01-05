@@ -1,7 +1,8 @@
-package org.gis.mstvisualizer.Core.Simulation.Events;
+package org.gis.mstvisualizer.Core.Simulation.Events.Mst;
 
 
 import org.gis.mstvisualizer.Core.Graph.Edge;
+import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEvent;
 
 public class AddEdgeToMstEvent extends AlgorithmEvent {
 

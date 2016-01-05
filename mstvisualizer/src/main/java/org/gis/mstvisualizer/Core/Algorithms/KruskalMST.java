@@ -3,10 +3,11 @@ package org.gis.mstvisualizer.Core.Algorithms;
 import org.gis.mstvisualizer.Core.Graph.Edge;
 import org.gis.mstvisualizer.Core.Graph.MinEdgeComparator;
 import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
-import org.gis.mstvisualizer.Core.Simulation.Events.AddEdgeToMstEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.EdgePickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.EdgeVisitedEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Queue.DequeueEdgeEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Queue.EnqueueEdgeEvent;
 import org.gis.mstvisualizer.Core.UnionFind;
 
 import java.util.PriorityQueue;
@@ -21,6 +22,10 @@ public class KruskalMST extends AlgorithmMST {
         final Queue<Edge> edgesQueue = new PriorityQueue<Edge>(new MinEdgeComparator());
 
         for(Edge e : G.edges()) {
+
+            /* EVENT */
+            algorithmEventStorage.addEvent(new EnqueueEdgeEvent(e));
+
             edgesQueue.add(e);
         }
 
@@ -28,6 +33,9 @@ public class KruskalMST extends AlgorithmMST {
 
         while(!edgesQueue.isEmpty() && mst.size() < G.getV() - 1) {
             final Edge e = edgesQueue.remove();
+
+            /* EVENT */
+            algorithmEventStorage.addEvent(new DequeueEdgeEvent(e));
 
              /* EVENT */
             algorithmEventStorage.addEvent(new EdgePickedEvent(e));
