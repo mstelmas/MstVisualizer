@@ -34,20 +34,20 @@ public class App
 
         final AlgorithmMST algorithmMST = new KruskalMST(g);
 
-        System.out.println("MST by Kruskal: ");
+        System.out.println("MST by " + algorithmMST.getName());
         System.out.println("Size: " + algorithmMST.getWeight());
         System.out.println("List of edges in MST: ");
 
         algorithmMST.edges().forEach(System.out::println);
 
 
-//        final AlgorithmMST algorithmMST2 = new PrimMST(g);
-//
-//        System.out.println("MST by Prim: ");
-//        System.out.println("Size: " + algorithmMST2.getWeight());
-//        System.out.println("List of edges in MST: ");
-//
-//        algorithmMST2.edges().forEach(System.out::println);
+        final AlgorithmMST algorithmMST2 = new PrimMST(g);
+
+        System.out.println("MST by " + algorithmMST2.getName());
+        System.out.println("Size: " + algorithmMST2.getWeight());
+        System.out.println("List of edges in MST: ");
+
+        algorithmMST2.edges().forEach(System.out::println);
 
         final GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST.getAlgorithmEventStorage());
         graphVisualizer.run();
