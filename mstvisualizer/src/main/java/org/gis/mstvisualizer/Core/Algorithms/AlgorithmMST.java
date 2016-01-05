@@ -28,7 +28,7 @@ public abstract class AlgorithmMST {
         this.name = name;
     }
 
-    protected Queue<Edge> mst = new LinkedList<Edge>();
+    protected final Queue<Edge> mst = new LinkedList<Edge>();
 
     public Iterable<Edge> edges() {
         return mst;

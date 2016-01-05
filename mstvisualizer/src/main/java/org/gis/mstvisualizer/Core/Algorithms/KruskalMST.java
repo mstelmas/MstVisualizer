@@ -22,11 +22,10 @@ public class KruskalMST extends AlgorithmMST {
         final Queue<Edge> edgesQueue = new PriorityQueue<Edge>(new MinEdgeComparator());
 
         for(Edge e : G.edges()) {
+            edgesQueue.add(e);
 
             /* EVENT */
             algorithmEventStorage.addEvent(new EnqueueEdgeEvent(e));
-
-            edgesQueue.add(e);
         }
 
         final UnionFind uf = new UnionFind(G.getV());

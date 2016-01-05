@@ -4,6 +4,8 @@ import org.gis.mstvisualizer.Core.Graph.Edge;
 import org.gis.mstvisualizer.Core.Graph.MinEdgeComparator;
 import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
 import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Queue.DequeueEdgeEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Queue.EnqueueEdgeEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexVisitedEvent;
 
@@ -39,6 +41,9 @@ public class PrimMST extends AlgorithmMST {
         while(!edgesQueue.isEmpty()) {
             final Edge edge = edgesQueue.remove();
 
+             /* EVENT */
+            algorithmEventStorage.addEvent(new DequeueEdgeEvent(edge));
+
             final int v = edge.either();
             final int w = edge.other(v);
 
@@ -46,17 +51,23 @@ public class PrimMST extends AlgorithmMST {
                 continue;
             }
 
-            /* EVENT */
-            algorithmEventStorage.addEvent(new AddEdgeToMstEvent(edge));
-
             mst.add(edge);
             weight += edge.getWeight();
 
+            /* EVENT */
+            algorithmEventStorage.addEvent(new AddEdgeToMstEvent(edge));
+
             if(!marked[v]) {
+                 /* EVENT */
+                algorithmEventStorage.addEvent(new VertexPickedEvent(v));
+
                 scan(G, v);
             }
 
             if(!marked[w]) {
+                 /* EVENT */
+                algorithmEventStorage.addEvent(new VertexPickedEvent(w));
+
                 scan(G, w);
             }
         }
@@ -68,9 +79,12 @@ public class PrimMST extends AlgorithmMST {
         /* EVENT */
         algorithmEventStorage.addEvent(new VertexVisitedEvent(v));
 
-        for(Edge e : G.adj(v)) {
-            if(!marked[e.other(v)]) {
-                edgesQueue.add(e);
+        for(Edge edge : G.adj(v)) {
+            if(!marked[edge.other(v)]) {
+                edgesQueue.add(edge);
+
+                /* EVENT */
+                algorithmEventStorage.addEvent(new EnqueueEdgeEvent(edge));
             }
         }
     }

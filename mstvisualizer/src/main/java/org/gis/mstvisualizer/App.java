@@ -49,7 +49,7 @@ public class App
 
         algorithmMST2.edges().forEach(System.out::println);
 
-        final GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST.getAlgorithmEventStorage());
+        final GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST2.getAlgorithmEventStorage());
         graphVisualizer.run();
 
 
