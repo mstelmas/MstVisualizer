@@ -41,15 +41,18 @@ public class App
         algorithmMST.edges().forEach(System.out::println);
 
 
-        final AlgorithmMST algorithmMST2 = new PrimMST(g);
+//        final AlgorithmMST algorithmMST2 = new PrimMST(g);
+//
+//        System.out.println("MST by Prim: ");
+//        System.out.println("Size: " + algorithmMST2.getWeight());
+//        System.out.println("List of edges in MST: ");
+//
+//        algorithmMST2.edges().forEach(System.out::println);
 
-        System.out.println("MST by Prim: ");
-        System.out.println("Size: " + algorithmMST2.getWeight());
-        System.out.println("List of edges in MST: ");
+        final GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST.getAlgorithmEventStorage());
+        graphVisualizer.run();
 
-        algorithmMST2.edges().forEach(System.out::println);
 
-        GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST.getAlgorithmEventStorage());
 
     }
 }
