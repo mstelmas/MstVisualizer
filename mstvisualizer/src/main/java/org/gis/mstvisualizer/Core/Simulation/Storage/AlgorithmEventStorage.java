@@ -15,12 +15,21 @@ public class AlgorithmEventStorage implements IAlgorithmEventStorage {
     }
 
     @Override
+    public AlgorithmEvent getEvent(final int event) {
+        if(event < 0 || event >= count()) {
+            throw new IllegalArgumentException();
+        }
+
+        return algorithmEvents.get(event);
+    }
+
+    @Override
     public boolean isEmpty() {
         return algorithmEvents.isEmpty();
     }
 
     @Override
-    public long count() {
+    public int count() {
         return algorithmEvents.size();
     }
 
