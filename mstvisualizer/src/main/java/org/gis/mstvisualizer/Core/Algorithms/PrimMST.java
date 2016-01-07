@@ -1,30 +1,22 @@
 package org.gis.mstvisualizer.Core.Algorithms;
 
-import org.gis.mstvisualizer.Core.Graph.Edge;
-import org.gis.mstvisualizer.Core.Graph.MinEdgeComparator;
-import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
-import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.Queue.DequeueEdgeEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.Queue.EnqueueEdgeEvent;
+import edu.uci.ics.jung.graph.Graph;
+import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexVisitedEvent;
 
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class PrimMST extends AlgorithmMST {
 
     private final boolean[] marked;
+    private PriorityQueue<Link> edgesQueue = new PriorityQueue<>();
 
-    final Queue<Edge> edgesQueue = new PriorityQueue<Edge>(new MinEdgeComparator());
-
-
-    public PrimMST(final WeightedGraph G) {
+    public PrimMST(final Graph G) {
         super("Prim's Algorithm");
+        marked = new boolean[G.getVertexCount()];
 
-        marked = new boolean[G.getV()];
-
-        for (int i = 0; i < G.getV(); i++) {
+        for (int i = 0; i < G.getVertexCount(); i++) {
             if(!marked[i]) {
 
                 /* EVENT */
@@ -35,27 +27,27 @@ public class PrimMST extends AlgorithmMST {
         }
     }
 
-    private void prim(final WeightedGraph G, final int s) {
+    private void prim(final Graph G, final int s) {
         scan(G, s);
 
         while(!edgesQueue.isEmpty()) {
-            final Edge edge = edgesQueue.remove();
+            final Link e = edgesQueue.poll();
 
              /* EVENT */
-            algorithmEventStorage.addEvent(new DequeueEdgeEvent(edge));
+//            algorithmEventStorage.addEvent(new DequeueEdgeEvent(e));
 
-            final int v = edge.either();
-            final int w = edge.other(v);
+            final int v = (int) G.getEndpoints(e).getFirst();
+            final int w = (int) G.getEndpoints(e).getSecond();
 
             if(marked[v] && marked[w]) {
                 continue;
             }
 
-            mst.add(edge);
-            weight += edge.getWeight();
+            mst.add(e);
+            weight += e.getWeight();
 
             /* EVENT */
-            algorithmEventStorage.addEvent(new AddEdgeToMstEvent(edge));
+//            algorithmEventStorage.addEvent(new AddEdgeToMstEvent(e));
 
             if(!marked[v]) {
                  /* EVENT */
@@ -73,18 +65,18 @@ public class PrimMST extends AlgorithmMST {
         }
     }
 
-    private void scan(final WeightedGraph G, final int v) {
+    private void scan(final Graph G, final int v) {
         marked[v] = true;
 
         /* EVENT */
         algorithmEventStorage.addEvent(new VertexVisitedEvent(v));
 
-        for(Edge edge : G.adj(v)) {
-            if(!marked[edge.other(v)]) {
-                edgesQueue.add(edge);
+        for(Object neighbor : G.getNeighbors(v)) {
+            if(!marked[(int)neighbor]) {
+                edgesQueue.add((Link)G.findEdge(v, neighbor));
 
                 /* EVENT */
-                algorithmEventStorage.addEvent(new EnqueueEdgeEvent(edge));
+//                algorithmEventStorage.addEvent(new EnqueueEdgeEvent(edge));
             }
         }
     }

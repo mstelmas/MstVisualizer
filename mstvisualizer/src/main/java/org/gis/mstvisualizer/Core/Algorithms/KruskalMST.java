@@ -1,58 +1,43 @@
 package org.gis.mstvisualizer.Core.Algorithms;
 
-import org.gis.mstvisualizer.Core.Graph.Edge;
-import org.gis.mstvisualizer.Core.Graph.MinEdgeComparator;
-import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
-import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.EdgePickedEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.EdgeVisitedEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.Queue.DequeueEdgeEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.Queue.EnqueueEdgeEvent;
+import edu.uci.ics.jung.graph.Graph;
+import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.UnionFind;
 
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 
 public class KruskalMST extends AlgorithmMST {
 
-    public KruskalMST(final WeightedGraph G) {
+    public KruskalMST(final Graph<Integer, Link> G) {
         super("Kruskal's Algorithm");
 
-        final Queue<Edge> edgesQueue = new PriorityQueue<Edge>(new MinEdgeComparator());
+        final PriorityQueue<Link> edgesQueue = new PriorityQueue<>(G.getEdges());
+        /* EVENT */
+//        algorithmEventStorage.addEvent(new EnqueueEdgeEvent((Link) e));
 
-        for(Edge e : G.edges()) {
-            edgesQueue.add(e);
+        final UnionFind uf = new UnionFind(G.getVertexCount());
 
-            /* EVENT */
-            algorithmEventStorage.addEvent(new EnqueueEdgeEvent(e));
-        }
-
-        final UnionFind uf = new UnionFind(G.getV());
-
-        while(!edgesQueue.isEmpty() && mst.size() < G.getV() - 1) {
-            final Edge e = edgesQueue.remove();
+        while(!edgesQueue.isEmpty() && mst.size() < G.getVertexCount() - 1) {
+            final Link e = edgesQueue.poll();
 
             /* EVENT */
-            algorithmEventStorage.addEvent(new DequeueEdgeEvent(e));
+//            algorithmEventStorage.addEvent(new DequeueEdgeEvent(e));
 
              /* EVENT */
-            algorithmEventStorage.addEvent(new EdgePickedEvent(e));
+//            algorithmEventStorage.addEvent(new EdgePickedEvent(e));
 
-            final int v = e.either();
-            final int w = e.other(v);
+            final int v = G.getEndpoints(e).getFirst();
+            final int w = G.getEndpoints(e).getSecond();
 
             if(!uf.connected(v, w)) {
                 uf.union(v, w);
-
                  /* EVENT */
-                algorithmEventStorage.addEvent(new EdgeVisitedEvent(e));
-
+//                algorithmEventStorage.addEvent(new EdgeVisitedEvent(e));
                 mst.add(e);
                 weight += e.getWeight();
-
                  /* EVENT */
-                algorithmEventStorage.addEvent(new AddEdgeToMstEvent(e));
+//                algorithmEventStorage.addEvent(new AddEdgeToMstEvent(e));
             }
         }
     }

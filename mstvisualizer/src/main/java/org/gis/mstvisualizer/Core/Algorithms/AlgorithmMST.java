@@ -1,7 +1,7 @@
 package org.gis.mstvisualizer.Core.Algorithms;
 
 import lombok.Getter;
-import org.gis.mstvisualizer.Core.Graph.Edge;
+import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Simulation.Storage.AlgorithmEventStorage;
 import org.gis.mstvisualizer.Core.Simulation.Storage.IAlgorithmEventStorage;
 
@@ -11,7 +11,7 @@ import java.util.Queue;
 public abstract class AlgorithmMST {
 
     @Getter
-    protected double weight;
+    protected double weight = 0.0;
 
     @Getter
     protected IAlgorithmEventStorage algorithmEventStorage;
@@ -28,9 +28,9 @@ public abstract class AlgorithmMST {
         this.name = name;
     }
 
-    protected final Queue<Edge> mst = new LinkedList<Edge>();
+    protected final Queue<Link> mst = new LinkedList<>();
 
-    public Iterable<Edge> edges() {
+    public Iterable<Link> links() {
         return mst;
     }
 }

@@ -1,53 +1,81 @@
 package org.gis.mstvisualizer;
 
 
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import edu.uci.ics.jung.visualization.renderers.Renderer;
+import org.apache.commons.collections15.Transformer;
 import org.gis.mstvisualizer.Core.Algorithms.AlgorithmMST;
 import org.gis.mstvisualizer.Core.Algorithms.KruskalMST;
 import org.gis.mstvisualizer.Core.Algorithms.PrimMST;
-import org.gis.mstvisualizer.Core.Graph.Edge;
-import org.gis.mstvisualizer.Core.Graph.WeightedGraph;
+import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Visualizer.GraphVisualizer;
 
+import javax.swing.*;
+import java.awt.*;
 
-public class App
+
+public class App extends JFrame
 {
     public static void main( String[] args ) {
+        JFrame frame = new JFrame("MST Visualizer");
 
-        final WeightedGraph g = new WeightedGraph(8);
+        Graph<Integer, Link> g = new UndirectedSparseGraph<Integer, Link>(){};
+        g.addVertex( 0 );
+        g.addVertex( 1 );
+        g.addVertex( 2 );
+        g.addVertex( 3 );
+        g.addVertex( 4 );
+        g.addVertex( 5 );
+        g.addVertex( 6 );
+        g.addVertex( 7 );
+        g.addEdge(new Link(0.26), 0, 2);
+        g.addEdge(new Link(0.38), 0, 4);
+        g.addEdge(new Link(0.16), 0, 7);
+        g.addEdge(new Link(0.36), 1, 2);
+        g.addEdge(new Link(0.29), 1, 3);
+        g.addEdge(new Link(0.32), 1, 5);
+        g.addEdge(new Link(0.19), 1, 7);
+        g.addEdge(new Link(0.17), 2, 3);
+        g.addEdge(new Link(0.34), 2, 7);
+        g.addEdge(new Link(0.52), 3, 6);
+        g.addEdge(new Link(0.35), 4, 5);
+        g.addEdge(new Link(0.37), 4, 7);
+        g.addEdge(new Link(0.28), 5, 7);
+        g.addEdge(new Link(0.40), 6, 2);
+        g.addEdge(new Link(0.58), 6, 0);
+        g.addEdge(new Link(0.93), 6, 4);
 
-        g.addEdge(new Edge(4, 5, 0.35));
-        g.addEdge(new Edge(4, 7, 0.37));
-        g.addEdge(new Edge(5, 7, 0.28));
-        g.addEdge(new Edge(0, 7, 0.16));
-        g.addEdge(new Edge(1, 5, 0.32));
-        g.addEdge(new Edge(0, 4, 0.38));
-        g.addEdge(new Edge(2, 3, 0.17));
-        g.addEdge(new Edge(1, 7, 0.19));
-        g.addEdge(new Edge(0, 2, 0.26));
-        g.addEdge(new Edge(1, 2, 0.36));
-        g.addEdge(new Edge(1, 3, 0.29));
-        g.addEdge(new Edge(2, 7, 0.34));
-        g.addEdge(new Edge(6, 2, 0.40));
-        g.addEdge(new Edge(3, 6, 0.52));
-        g.addEdge(new Edge(6, 0, 0.58));
-        g.addEdge(new Edge(6, 4, 0.93));
+        Transformer<Integer,Paint> vertexPaint = i -> Color.GREEN;
+
+        CircleLayout<Integer, Link> layout = new CircleLayout<>(g);
+        layout.setSize(new Dimension(500,500));
+        BasicVisualizationServer<Integer,Link> vv = new BasicVisualizationServer<>(layout);
+        vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<>());
+        vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<>());
+        vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.getContentPane().add(vv);
+        frame.pack();
+        frame.setVisible(true);
+
 
         final AlgorithmMST algorithmMST = new KruskalMST(g);
-
         System.out.println("MST by " + algorithmMST.getName());
         System.out.println("Size: " + algorithmMST.getWeight());
         System.out.println("List of edges in MST: ");
-
-        algorithmMST.edges().forEach(System.out::println);
+        algorithmMST.links().forEach(link -> System.out.println(g.getEndpoints(link)));
 
 
         final AlgorithmMST algorithmMST2 = new PrimMST(g);
-
         System.out.println("MST by " + algorithmMST2.getName());
         System.out.println("Size: " + algorithmMST2.getWeight());
         System.out.println("List of edges in MST: ");
-
-        algorithmMST2.edges().forEach(System.out::println);
+        algorithmMST2.links().forEach(link -> System.out.println(g.getEndpoints(link)));
 
         final GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST2.getAlgorithmEventStorage());
         graphVisualizer.run();
