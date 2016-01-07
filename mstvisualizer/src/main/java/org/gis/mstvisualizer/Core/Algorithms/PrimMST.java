@@ -2,6 +2,9 @@ package org.gis.mstvisualizer.Core.Algorithms;
 
 import edu.uci.ics.jung.graph.Graph;
 import org.gis.mstvisualizer.Core.Graph.Link;
+import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Queue.DequeueEdgeEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.Queue.EnqueueEdgeEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexVisitedEvent;
 
@@ -34,7 +37,7 @@ public class PrimMST extends AlgorithmMST {
             final Link e = edgesQueue.poll();
 
              /* EVENT */
-//            algorithmEventStorage.addEvent(new DequeueEdgeEvent(e));
+            algorithmEventStorage.addEvent(new DequeueEdgeEvent(e));
 
             final int v = (int) G.getEndpoints(e).getFirst();
             final int w = (int) G.getEndpoints(e).getSecond();
@@ -47,7 +50,7 @@ public class PrimMST extends AlgorithmMST {
             weight += e.getWeight();
 
             /* EVENT */
-//            algorithmEventStorage.addEvent(new AddEdgeToMstEvent(e));
+            algorithmEventStorage.addEvent(new AddEdgeToMstEvent(e));
 
             if(!marked[v]) {
                  /* EVENT */
@@ -73,10 +76,11 @@ public class PrimMST extends AlgorithmMST {
 
         for(Object neighbor : G.getNeighbors(v)) {
             if(!marked[(int)neighbor]) {
-                edgesQueue.add((Link)G.findEdge(v, neighbor));
+                Link e = (Link)G.findEdge(v, neighbor);
+                edgesQueue.add(e);
 
                 /* EVENT */
-//                algorithmEventStorage.addEvent(new EnqueueEdgeEvent(edge));
+                algorithmEventStorage.addEvent(new EnqueueEdgeEvent(e));
             }
         }
     }

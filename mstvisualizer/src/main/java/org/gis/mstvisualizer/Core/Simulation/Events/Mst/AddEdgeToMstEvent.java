@@ -1,14 +1,14 @@
 package org.gis.mstvisualizer.Core.Simulation.Events.Mst;
 
 
-import org.gis.mstvisualizer.Core.Graph.Edge;
+import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEvent;
 
 public class AddEdgeToMstEvent extends AlgorithmEvent {
 
-    final Edge edge;
+    final Link edge;
 
-    public AddEdgeToMstEvent(final Edge edge) {
+    public AddEdgeToMstEvent(final Link edge) {
         this.edge = edge;
     }
 

@@ -1,11 +1,11 @@
 package org.gis.mstvisualizer.Core.Simulation.Events;
 
-import org.gis.mstvisualizer.Core.Graph.Edge;
+import org.gis.mstvisualizer.Core.Graph.Link;
 
 public class EdgeVisitedEvent extends AlgorithmEvent {
-    final Edge edge;
+    final Link edge;
 
-    public EdgeVisitedEvent(final Edge edge) {
+    public EdgeVisitedEvent(final Link edge) {
         this.edge = edge;
     }
 
