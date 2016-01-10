@@ -1,13 +1,8 @@
 package org.gis.mstvisualizer;
 
 
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
-import edu.uci.ics.jung.visualization.BasicVisualizationServer;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.Renderer;
-import org.apache.commons.collections15.Transformer;
 import org.gis.mstvisualizer.Core.Algorithms.AlgorithmMST;
 import org.gis.mstvisualizer.Core.Algorithms.KruskalMST;
 import org.gis.mstvisualizer.Core.Algorithms.PrimMST;
@@ -16,13 +11,70 @@ import org.gis.mstvisualizer.Visualizer.GraphVisualizer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class App extends JFrame
 {
     public static void main( String[] args ) {
         JFrame frame = new JFrame("MST Visualizer");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        Graph g = loadGraph();
+
+        JButton bKruskal = new JButton("Visualize Kruskal Algorithm");
+        bKruskal.setVerticalTextPosition(AbstractButton.CENTER);
+        bKruskal.setHorizontalTextPosition(AbstractButton.LEADING);
+
+        bKruskal.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                System.out.println("Krusk rusza ");
+                final AlgorithmMST algorithmMST = new KruskalMST(g);
+                System.out.println("MST by " + algorithmMST.getName());
+                System.out.println("Size: " + algorithmMST.getWeight());
+                System.out.println("List of edges in MST: ");
+                algorithmMST.links().forEach(link -> System.out.println(g.getEndpoints(link)));
+                final GraphVisualizer graphVisualizer = new GraphVisualizer(frame, g, algorithmMST.getAlgorithmEventStorage());
+                graphVisualizer.run();
+
+//                g.addEdge(new Link(0.33,Color.GREEN), 2, 5);
+            }
+        });
+        JButton bPrim = new JButton("Visualize Prim Algorithm");
+        bPrim.setVerticalTextPosition(AbstractButton.CENTER);
+        bPrim.setHorizontalTextPosition(AbstractButton.LEADING);
+
+        bPrim.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                System.out.println("Prim rusza ");
+
+                final AlgorithmMST algorithmMST2 = new PrimMST(g);
+                System.out.println("MST by " + algorithmMST2.getName());
+                System.out.println("Size: " + algorithmMST2.getWeight());
+                System.out.println("List of edges in MST: ");
+                algorithmMST2.links().forEach(link -> System.out.println(g.getEndpoints(link)));
+
+                final GraphVisualizer graphVisualizer = new GraphVisualizer(frame, g, algorithmMST2.getAlgorithmEventStorage());
+                graphVisualizer.run();
+
+//                g.addEdge(new Link(0.33,Color.RED), 2, 5);
+            }
+        });
+        JPanel layout = new JPanel();
+        layout.setLayout(new FlowLayout());
+        layout.add(bKruskal);
+        layout.add(bPrim);
+        frame.getContentPane().add(layout, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private static Graph loadGraph(){
         Graph<Integer, Link> g = new UndirectedSparseGraph<Integer, Link>(){};
         g.addVertex( 0 );
         g.addVertex( 1 );
@@ -49,41 +101,6 @@ public class App extends JFrame
         g.addEdge(new Link(0.58), 6, 0);
         g.addEdge(new Link(0.93), 6, 4);
 
-        Transformer<Integer,Paint> vertexPaint = i -> Color.GREEN;
-
-        Transformer<Link, Paint> edgePaint = Link::getColor;
-
-        CircleLayout<Integer, Link> layout = new CircleLayout<>(g);
-        layout.setSize(new Dimension(500,500));
-        BasicVisualizationServer<Integer,Link> vv = new BasicVisualizationServer<>(layout);
-        vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<>());
-        vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<>());
-        vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
-        vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(vv);
-        frame.pack();
-        frame.setVisible(true);
-
-
-        final AlgorithmMST algorithmMST = new KruskalMST(g);
-        System.out.println("MST by " + algorithmMST.getName());
-        System.out.println("Size: " + algorithmMST.getWeight());
-        System.out.println("List of edges in MST: ");
-        algorithmMST.links().forEach(link -> System.out.println(g.getEndpoints(link)));
-
-
-        final AlgorithmMST algorithmMST2 = new PrimMST(g);
-        System.out.println("MST by " + algorithmMST2.getName());
-        System.out.println("Size: " + algorithmMST2.getWeight());
-        System.out.println("List of edges in MST: ");
-        algorithmMST2.links().forEach(link -> System.out.println(g.getEndpoints(link)));
-
-        final GraphVisualizer graphVisualizer = new GraphVisualizer(g, algorithmMST2.getAlgorithmEventStorage());
-        graphVisualizer.run();
-
-
-
+        return g;
     }
 }
