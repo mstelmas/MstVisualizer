@@ -2,6 +2,7 @@ package org.gis.mstvisualizer.Core.Graph;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.gis.mstvisualizer.Core.Simulation.SimulationConstants;
 
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public class Vertex {
 
     public Vertex(final int v) {
         this.v = v;
-        this.color = Color.WHITE;
+        this.color = SimulationConstants.VERTEX_DEFAULT_COLOR;
     }
 
     public Vertex(final int v, final Color color) {
