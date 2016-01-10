@@ -34,7 +34,7 @@ public class App extends JFrame
         g.addVertex( 7 );
         g.addEdge(new Link(0.26), 0, 2);
         g.addEdge(new Link(0.38), 0, 4);
-        g.addEdge(new Link(0.16), 0, 7);
+        g.addEdge(new Link(0.16, Color.RED), 0, 7);
         g.addEdge(new Link(0.36), 1, 2);
         g.addEdge(new Link(0.29), 1, 3);
         g.addEdge(new Link(0.32), 1, 5);
@@ -51,12 +51,15 @@ public class App extends JFrame
 
         Transformer<Integer,Paint> vertexPaint = i -> Color.GREEN;
 
+        Transformer<Link, Paint> edgePaint = Link::getColor;
+
         CircleLayout<Integer, Link> layout = new CircleLayout<>(g);
         layout.setSize(new Dimension(500,500));
         BasicVisualizationServer<Integer,Link> vv = new BasicVisualizationServer<>(layout);
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<>());
         vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<>());
+        vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
         vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(vv);

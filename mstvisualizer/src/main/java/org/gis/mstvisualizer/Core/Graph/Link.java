@@ -2,12 +2,23 @@ package org.gis.mstvisualizer.Core.Graph;
 
 import lombok.Getter;
 
+import java.awt.*;
+
 public class Link implements Comparable<Link>{
     @Getter
     private final Double weight;
 
+    @Getter
+    private final Color color;
+
     public Link(double weight){
         this.weight = weight;
+        this.color = Color.BLACK;
+    }
+
+    public Link(double weight, Color color){
+        this.weight = weight;
+        this.color = color;
     }
 
     @Override
