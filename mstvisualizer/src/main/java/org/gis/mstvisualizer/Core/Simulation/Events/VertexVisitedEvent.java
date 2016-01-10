@@ -1,10 +1,12 @@
 package org.gis.mstvisualizer.Core.Simulation.Events;
 
-public class VertexVisitedEvent extends AlgorithmEvent {
-    final int vertex;
+import lombok.Getter;
+import org.gis.mstvisualizer.Core.Graph.Vertex;
 
-    public VertexVisitedEvent(final int vertex) {
-        this.vertex = vertex;
+public class VertexVisitedEvent extends AlgorithmVertexEvent {
+
+    public VertexVisitedEvent(final Vertex vertex) {
+        super(vertex);
     }
 
     @Override

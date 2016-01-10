@@ -1,15 +1,17 @@
 package org.gis.mstvisualizer.Core.Graph;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
 
 public class Link implements Comparable<Link>{
+
     @Getter
     private final Double weight;
 
-    @Getter
-    private final Color color;
+    @Getter @Setter
+    private Color color;
 
     public Link(double weight){
         this.weight = weight;

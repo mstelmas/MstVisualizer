@@ -2,6 +2,7 @@ package org.gis.mstvisualizer.Core.Algorithms;
 
 import edu.uci.ics.jung.graph.Graph;
 import org.gis.mstvisualizer.Core.Graph.Link;
+import org.gis.mstvisualizer.Core.Graph.Vertex;
 import org.gis.mstvisualizer.Core.Simulation.Events.EdgePickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.EdgeVisitedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
@@ -13,7 +14,7 @@ import java.util.PriorityQueue;
 
 public class KruskalMST extends AlgorithmMST {
 
-    public KruskalMST(final Graph<Integer, Link> G) {
+    public KruskalMST(final Graph<Vertex, Link> G) {
         super("Kruskal's Algorithm");
 
         final PriorityQueue<Link> edgesQueue = new PriorityQueue<>(G.getEdges());
@@ -29,8 +30,8 @@ public class KruskalMST extends AlgorithmMST {
              /* EVENT */
             algorithmEventStorage.addEvent(new EdgePickedEvent(e));
 
-            final int v = G.getEndpoints(e).getFirst();
-            final int w = G.getEndpoints(e).getSecond();
+            final int v = G.getEndpoints(e).getFirst().getV();
+            final int w = G.getEndpoints(e).getSecond().getV();
 
             if(!uf.connected(v, w)) {
                 uf.union(v, w);

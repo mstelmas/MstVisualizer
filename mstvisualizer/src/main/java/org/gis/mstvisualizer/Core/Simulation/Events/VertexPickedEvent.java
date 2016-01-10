@@ -1,11 +1,12 @@
 package org.gis.mstvisualizer.Core.Simulation.Events;
 
 
-public class VertexPickedEvent extends AlgorithmEvent {
-    final int vertex;
+import org.gis.mstvisualizer.Core.Graph.Vertex;
 
-    public VertexPickedEvent(final int vertex) {
-        this.vertex = vertex;
+public class VertexPickedEvent extends AlgorithmVertexEvent {
+
+    public VertexPickedEvent(final Vertex vertex) {
+        super(vertex);
     }
 
     @Override
