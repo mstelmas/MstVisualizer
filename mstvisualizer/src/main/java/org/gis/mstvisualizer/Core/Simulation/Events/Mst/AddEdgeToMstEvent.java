@@ -2,19 +2,17 @@ package org.gis.mstvisualizer.Core.Simulation.Events.Mst;
 
 
 import org.gis.mstvisualizer.Core.Graph.Link;
-import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEvent;
+import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEdgeEvent;
 
-public class AddEdgeToMstEvent extends AlgorithmEvent {
-
-    final Link edge;
+public class AddEdgeToMstEvent extends AlgorithmEdgeEvent {
 
     public AddEdgeToMstEvent(final Link edge) {
-        this.edge = edge;
+        super(edge);
     }
 
     @Override
     public String toString() {
-        return super.toString() + "AddEdgeToMstEvent (Edge: " + edge + ")\n";
+        return super.toString() + "AddEdgeToMstEvent (Edge: " + getEdge() + ")\n";
     }
 }
 

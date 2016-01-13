@@ -1,19 +1,22 @@
 package org.gis.mstvisualizer.Core.Graph;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.gis.mstvisualizer.Core.Simulation.SimulationConstants;
 
 import java.awt.*;
 
 public class Link implements Comparable<Link>{
+
     @Getter
     private final Double weight;
 
-    @Getter
-    private final Color color;
+    @Getter @Setter
+    private Color color;
 
     public Link(double weight){
         this.weight = weight;
-        this.color = Color.BLACK;
+        this.color = SimulationConstants.EDGE_DEFAULT_COLOR;
     }
 
     public Link(double weight, Color color){

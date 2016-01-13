@@ -5,8 +5,8 @@ import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEvent;
 public interface IEventManager {
     /* Event related methods */
     AlgorithmEvent getCurrentEvent();
-    void nextEvent();
-    void prevEvent();
+    AlgorithmEvent nextEvent();
+    AlgorithmEvent prevEvent();
     void firstEvent();
     void lastEvent();
 

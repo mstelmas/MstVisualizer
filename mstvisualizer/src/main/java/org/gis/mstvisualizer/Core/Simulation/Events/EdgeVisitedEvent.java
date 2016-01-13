@@ -1,12 +1,12 @@
 package org.gis.mstvisualizer.Core.Simulation.Events;
 
+import lombok.Getter;
 import org.gis.mstvisualizer.Core.Graph.Link;
 
-public class EdgeVisitedEvent extends AlgorithmEvent {
-    final Link edge;
+public class EdgeVisitedEvent extends AlgorithmEdgeEvent {
 
     public EdgeVisitedEvent(final Link edge) {
-        this.edge = edge;
+        super(edge);
     }
 
     @Override
