@@ -10,7 +10,6 @@ import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexVisitedEvent;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.PriorityQueue;
 
 public class PrimMST extends AlgorithmMST {

@@ -11,6 +11,9 @@ public abstract class AlgorithmEvent {
         this.algorithmEventType = algorithmEventType;
     }
 
+    public abstract void onExecute();
+    public abstract void onRevert();
+
     @Override
     public String toString() {
         return "AlgorithmEvent: ";

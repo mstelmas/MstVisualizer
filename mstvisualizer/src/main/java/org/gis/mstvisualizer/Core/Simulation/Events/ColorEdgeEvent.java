@@ -10,6 +10,11 @@ public class ColorEdgeEvent extends AlgorithmEdgeEvent {
     @Getter
     private final Color color;
 
+    @Override
+    public void onExecute() {
+        edge.setColor(this.color);
+    }
+
     public ColorEdgeEvent(final Link edge, final Color color) {
         super(edge);
         this.color = color;

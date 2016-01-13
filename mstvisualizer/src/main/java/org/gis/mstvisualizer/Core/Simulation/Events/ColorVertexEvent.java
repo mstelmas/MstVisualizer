@@ -14,4 +14,9 @@ public class ColorVertexEvent extends AlgorithmVertexEvent {
         super(vertex);
         this.color = color;
     }
+
+    @Override
+    public void onExecute() {
+        vertex.setColor(this.color);
+    }
 }
