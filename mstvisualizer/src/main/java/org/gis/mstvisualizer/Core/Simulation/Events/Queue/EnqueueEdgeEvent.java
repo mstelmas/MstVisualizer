@@ -22,6 +22,6 @@ public class EnqueueEdgeEvent extends AlgorithmEdgeEvent {
 
     @Override
     public String getDescription() {
-        return "Odłozenie krawędzi: " + getEdge() + " do kolejki";
+        return "Odłozenie krawędzi: " + edge + " do kolejki";
     }
 }

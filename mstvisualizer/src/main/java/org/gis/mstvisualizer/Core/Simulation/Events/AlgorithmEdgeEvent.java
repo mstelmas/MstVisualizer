@@ -9,9 +9,9 @@ import java.awt.*;
 public class AlgorithmEdgeEvent extends AlgorithmEvent {
 
     @Getter
-    final Link edge;
+    protected final Link edge;
 
-    final Color edgeStartColor;
+    private final Color edgeStartColor;
 
     public AlgorithmEdgeEvent(final Link edge) {
         super(AlgorithmEventType.EDGE_EVENT);

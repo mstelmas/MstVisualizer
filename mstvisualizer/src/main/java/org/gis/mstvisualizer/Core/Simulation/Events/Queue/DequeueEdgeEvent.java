@@ -25,6 +25,6 @@ public class DequeueEdgeEvent extends AlgorithmEdgeEvent {
 
         final Link edge = getEdge();
 
-        return "Pobranie krawędzi: " + edge.getWeight() + " z kolejki";
+        return "Pobranie krawędzi: " + edge + " z kolejki";
     }
 }

@@ -11,22 +11,27 @@ public class Link implements Comparable<Link>{
     @Getter
     private final Double weight;
 
-    @Getter @Setter
-    private Color color;
+    private final Vertex w;
 
-    public Link(double weight){
-        this.weight = weight;
-        this.color = SimulationConstants.EDGE_DEFAULT_COLOR;
+    private final Vertex v;
+
+    @Getter @Setter
+    public Color color;
+
+    public Link(final Vertex w, final Vertex v, final double weight){
+        this(w, v, weight, SimulationConstants.EDGE_DEFAULT_COLOR);
     }
 
-    public Link(double weight, Color color){
+    public Link(final Vertex w, final Vertex v, final double weight, final Color color){
+        this.w = w;
+        this.v = v;
         this.weight = weight;
         this.color = color;
     }
 
     @Override
     public String toString(){
-        return this.weight.toString();
+        return w.getV() + " - " + v.getV() + " (" + weight.toString() + " )";
     }
 
     public int compareTo(Link that) {

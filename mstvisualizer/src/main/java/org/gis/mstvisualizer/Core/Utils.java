@@ -65,7 +65,11 @@ public class Utils {
                     vertices.put(i2, v2);
                     g.addVertex(v2);
                 }
-                g.addEdge(new Link(weight), vertices.get(i1), vertices.get(i2));
+
+                final Vertex v1 = vertices.get(i1);
+                final Vertex v2 = vertices.get(i2);
+
+                g.addEdge(new Link(v1, v2, weight), vertices.get(i1), vertices.get(i2));
             }
         }
 

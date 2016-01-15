@@ -176,7 +176,9 @@ public final class GraphVisualizer {
 
 
     private void processAlgorithmEvent(final AlgorithmEvent algorithmEvent) {
-//        this.eventNameLabel.setText(algorithmEvent.toString());
+        Optional.ofNullable(algorithmEvent).ifPresent(event -> {
+            algorithmEventNameLabel.setText(event.getDescription());
+        });
     }
 
 
