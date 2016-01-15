@@ -19,4 +19,7 @@ public class SimulationConstants {
     public final static Color VERTEX_DEQUEUE_COLOR = Color.YELLOW;
 
 
+    public final static Stroke BASIC_EDGE_STROKE = new BasicStroke(2);
+    public final static Stroke EDGE_MST_STROKE = new BasicStroke(6);
+
 }

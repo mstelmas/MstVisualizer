@@ -18,6 +18,9 @@ public class Link implements Comparable<Link>{
     @Getter @Setter
     public Color color;
 
+    @Getter @Setter
+    public Stroke stroke;
+
     public Link(final Vertex w, final Vertex v, final double weight){
         this(w, v, weight, SimulationConstants.EDGE_DEFAULT_COLOR);
     }
@@ -27,6 +30,8 @@ public class Link implements Comparable<Link>{
         this.v = v;
         this.weight = weight;
         this.color = color;
+
+        this.stroke = new BasicStroke(2);
     }
 
     @Override

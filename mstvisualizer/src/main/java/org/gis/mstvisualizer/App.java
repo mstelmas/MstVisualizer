@@ -3,6 +3,7 @@ package org.gis.mstvisualizer;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
@@ -12,6 +13,7 @@ import org.gis.mstvisualizer.Core.Algorithms.KruskalMST;
 import org.gis.mstvisualizer.Core.Algorithms.PrimMST;
 import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Graph.Vertex;
+import org.gis.mstvisualizer.Core.Simulation.SimulationConstants;
 import org.gis.mstvisualizer.Core.Utils;
 import org.gis.mstvisualizer.Visualizer.GraphVisualizer;
 
@@ -20,7 +22,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+import java.util.Optional;
 
 
 public class App extends JFrame {
@@ -88,7 +90,7 @@ public class App extends JFrame {
                 System.out.println("Size: " + algorithmMST.getWeight());
                 System.out.println("List of edges in MST: ");
                 algorithmMST.links().forEach(link -> System.out.println(g.getEndpoints(link).getFirst() + " - " + g.getEndpoints(link).getSecond()));
-                final GraphVisualizer graphVisualizer = new GraphVisualizer(this, g, algorithmMST.getAlgorithmEventStorage());
+                final GraphVisualizer graphVisualizer = new GraphVisualizer(this, g, algorithmMST.getAlgorithmEventStorage(), algorithmMST);
                 graphVisualizer.run();
             } else if (algorithmList.getSelectedItem().toString().toLowerCase().contains("prim")) {
                 final AlgorithmMST algorithmMST2 = new PrimMST(g);
@@ -96,7 +98,7 @@ public class App extends JFrame {
                 System.out.println("Size: " + algorithmMST2.getWeight());
                 System.out.println("List of edges in MST: ");
                 algorithmMST2.links().forEach(link -> System.out.println(g.getEndpoints(link)));
-                final GraphVisualizer graphVisualizer = new GraphVisualizer(this, g, algorithmMST2.getAlgorithmEventStorage());
+                final GraphVisualizer graphVisualizer = new GraphVisualizer(this, g, algorithmMST2.getAlgorithmEventStorage(), algorithmMST2);
                 graphVisualizer.run();
             }
         });
@@ -106,20 +108,26 @@ public class App extends JFrame {
         leftInformationPanel.add(algorithmList, BorderLayout.PAGE_START);
 
         Transformer<Vertex, Paint> vertexPaint = Vertex::getColor;
-        Transformer<Link, Paint> edgePaint = Link::getColor;
+        Transformer<Link, String> edgeLabel = (edge) -> edge.getWeight().toString();
 
-        CircleLayout<Vertex, Link> layout = new CircleLayout<>(g);
+        Transformer<Link, Paint> edgePaint = Link::getColor;
+        Transformer<Link, Stroke> edgeStroke = (edge) -> {
+            return Optional.ofNullable(edge.getStroke()).orElse(SimulationConstants.BASIC_EDGE_STROKE);
+        };
+
+        CircleLayout<Vertex, Link> layout = new CircleLayout(new UndirectedSparseGraph<Vertex, Link>());
         layout.setSize(new Dimension(500, 500));
         BasicVisualizationServer<Vertex, Link> vv = new BasicVisualizationServer<>(layout);
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<>());
-        vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<>());
+        vv.getRenderContext().setEdgeLabelTransformer(edgeLabel);
         vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
+        vv.getRenderContext().setEdgeStrokeTransformer(edgeStroke);
         vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
 
 
         this.getContentPane().add(vv);
-        this.getContentPane().add(leftInformationPanel, BorderLayout.WEST);
+        this.getContentPane().add(leftInformationPanel, BorderLayout.PAGE_END);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.pack();
         this.setVisible(true);

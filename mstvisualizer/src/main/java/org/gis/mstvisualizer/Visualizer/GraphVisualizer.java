@@ -6,12 +6,14 @@ import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
 import org.apache.commons.collections15.Transformer;
+import org.gis.mstvisualizer.Core.Algorithms.AlgorithmMST;
 import org.gis.mstvisualizer.Core.ConnectedComponents;
 import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Graph.Vertex;
 import org.gis.mstvisualizer.Core.Simulation.EventManager;
 import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEvent;
 import org.gis.mstvisualizer.Core.Simulation.IEventManager;
+import org.gis.mstvisualizer.Core.Simulation.SimulationConstants;
 import org.gis.mstvisualizer.Core.Simulation.Storage.IAlgorithmEventStorage;
 import org.gis.mstvisualizer.Core.Utils;
 
@@ -21,6 +23,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.File;
+import java.util.Collections;
 import java.util.Optional;
 
 public final class GraphVisualizer {
@@ -30,6 +33,8 @@ public final class GraphVisualizer {
     private final IAlgorithmEventStorage algorithmEventStorage;
 
     private final IEventManager eventManager;
+
+    private final AlgorithmMST algorithmMST;
 
     private final JFrame frame;
 
@@ -54,6 +59,12 @@ public final class GraphVisualizer {
     private final JLabel graphConnectedComponentsLabel;
     private JLabel graphNotUniqueWarningLabel;
 
+
+    private final JPanel mstInformationPanel = new JPanel(new GridLayout(0, 1));
+    private final JLabel mstEdgesCountLabel;
+    private final JLabel mstWeightLabel;
+    private final JLabel mstAlgorithmNameLabel;
+
     /* TODO Implement */
     //private final JLabel graphSelfLoopsCount;
 
@@ -62,15 +73,16 @@ public final class GraphVisualizer {
     private final JLabel algorithmEventNameLabel;
 
 
-    private final JPanel rightInformationPanel = new JPanel();
+    private final JPanel rightInformationPanel = new JPanel(new GridLayout(0, 1));
 
 
 
 
     private BasicVisualizationServer<Vertex, Link> vv;
 
-    public GraphVisualizer(final JFrame frame, final Graph G, final IAlgorithmEventStorage algorithmEventStorage) {
+    public GraphVisualizer(final JFrame frame, final Graph G, final IAlgorithmEventStorage algorithmEventStorage, final AlgorithmMST algorithmMST) {
         this.frame = frame;
+        this.algorithmMST = algorithmMST;
 
         this.algorithmEventStorage = algorithmEventStorage;
         this.G = G;
@@ -145,7 +157,24 @@ public final class GraphVisualizer {
         algorithmStatusPanel.add(algorithmStatusLabel);
         algorithmStatusPanel.add(algorithmEventNameLabel);
 
+
+        mstEdgesCountLabel = new JLabel("Ilość krawędzi: " + algorithmMST.count());
+        mstWeightLabel = new JLabel("Całkowita waga: " + algorithmMST.getWeight());
+        mstAlgorithmNameLabel = new JLabel("Algorytm: " + algorithmMST.getName());
+
+        /* MST Information Panel */
+        mstInformationPanel.setBorder(new TitledBorder(
+                new EtchedBorder(EtchedBorder.LOWERED),
+                "MST"
+        ));
+        mstInformationPanel.add(mstAlgorithmNameLabel);
+        mstInformationPanel.add(mstEdgesCountLabel);
+        mstInformationPanel.add(mstWeightLabel);
+
+
+
         rightInformationPanel.add(algorithmStatusPanel);
+        rightInformationPanel.add(mstInformationPanel);
         rightInformationPanel.add(graphInformationPanel);
     }
 
@@ -153,14 +182,23 @@ public final class GraphVisualizer {
         CircleLayout<Vertex, Link> layout = new CircleLayout<>(this.G);
         layout.setSize(new Dimension(500,500));
 
-        Transformer<Vertex,Paint> vertexPaint = Vertex::getColor;
-        Transformer<Link, Paint> edgePaint = Link::getColor;
+        Transformer<Vertex,Paint> vertexColorTransformer = Vertex::getColor;
+        Transformer<Link, Paint> edgeColorTransformerPaint = Link::getColor;
+
+        final Transformer<Link, String> edgeLabelTransformer = (edge) -> edge.getWeight().toString();
+        final Transformer<Vertex, String> vertexLabelTransformer = (vertex) -> String.valueOf(vertex.getV());
+        final Transformer<Link, Stroke> edgeStrokeTransformer = (edge) -> Optional.ofNullable(edge.getStroke()).orElse(SimulationConstants.BASIC_EDGE_STROKE);
+
 
         vv = new BasicVisualizationServer<>(layout);
-        vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<>());
-        vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<>());
-        vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
+        vv.getRenderContext().setVertexFillPaintTransformer(vertexColorTransformer);
+
+        vv.getRenderContext().setVertexLabelTransformer(vertexLabelTransformer);
+        vv.getRenderContext().setEdgeLabelTransformer(edgeLabelTransformer);
+
+
+        vv.getRenderContext().setEdgeDrawPaintTransformer(edgeColorTransformerPaint);
+        vv.getRenderContext().setEdgeStrokeTransformer(edgeStrokeTransformer);
         vv.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
 
         graphPanel.add(vv);

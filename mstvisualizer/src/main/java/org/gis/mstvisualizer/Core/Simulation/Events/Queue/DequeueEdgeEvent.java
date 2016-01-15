@@ -22,9 +22,6 @@ public class DequeueEdgeEvent extends AlgorithmEdgeEvent {
 
     @Override
     public String getDescription() {
-
-        final Link edge = getEdge();
-
         return "Pobranie krawędzi: " + edge + " z kolejki";
     }
 }

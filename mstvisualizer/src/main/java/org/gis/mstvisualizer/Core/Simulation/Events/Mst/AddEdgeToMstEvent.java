@@ -5,6 +5,8 @@ import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Simulation.Events.AlgorithmEdgeEvent;
 import org.gis.mstvisualizer.Core.Simulation.SimulationConstants;
 
+import java.awt.*;
+
 public class AddEdgeToMstEvent extends AlgorithmEdgeEvent {
 
     public AddEdgeToMstEvent(final Link edge) {
@@ -14,6 +16,7 @@ public class AddEdgeToMstEvent extends AlgorithmEdgeEvent {
     @Override
     public void onExecute() {
         getEdge().setColor(SimulationConstants.EDGE_MST_COLOR);
+        edge.setStroke(SimulationConstants.EDGE_MST_STROKE);
     }
 
     @Override

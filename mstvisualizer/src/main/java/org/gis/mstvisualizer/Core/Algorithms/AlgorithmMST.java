@@ -7,6 +7,7 @@ import org.gis.mstvisualizer.Core.Simulation.Storage.IAlgorithmEventStorage;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.stream.StreamSupport;
 
 public abstract class AlgorithmMST {
 
@@ -32,5 +33,10 @@ public abstract class AlgorithmMST {
 
     public Iterable<Link> links() {
         return mst;
+    }
+
+    public long count() {
+        return StreamSupport.stream(links().spliterator(), false)
+                .count();
     }
 }
