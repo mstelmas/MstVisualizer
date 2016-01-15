@@ -9,8 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -41,6 +41,19 @@ public class Utils {
 
         return selfLoopsCount;
     }
+
+
+    /* TODO: Improve & check per Connected Component */
+    public static boolean checkGraphEdgesUniqueness(final Graph<Vertex, Link> G) {
+
+        final long distinctEdgeWeights = Optional.ofNullable(G.getEdges()).orElse(Collections.emptyList()).stream()
+                .map(Link::getWeight)
+                .distinct()
+                .count();
+
+        return distinctEdgeWeights == G.getEdgeCount();
+    }
+
 
     public static Graph<Vertex, Link> loadGraphFromFile(final String file) throws FileNotFoundException, IOException {
         final Graph<Vertex, Link> g = new UndirectedSparseGraph<Vertex, Link>() {
