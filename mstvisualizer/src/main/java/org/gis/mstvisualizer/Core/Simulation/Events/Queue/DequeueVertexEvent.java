@@ -20,4 +20,9 @@ public class DequeueVertexEvent extends AlgorithmVertexEvent {
     public String toString() {
         return super.toString() + "DequeueVertexEvent (V: " + getVertex() + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Zdjęcie wierzchołka: " + getVertex().getV() + " z kolejki";
+    }
 }

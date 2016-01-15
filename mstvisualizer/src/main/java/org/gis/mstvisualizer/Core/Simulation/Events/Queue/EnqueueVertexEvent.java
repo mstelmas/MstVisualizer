@@ -19,4 +19,9 @@ public class EnqueueVertexEvent extends AlgorithmVertexEvent {
     public String toString() {
         return super.toString() + "EnqueueVertexEvent (V: " + getVertex() + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Odłozenie wierzchołka: " + getVertex().getV() + " do kolejki";
+    }
 }

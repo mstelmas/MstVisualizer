@@ -18,4 +18,9 @@ public class VertexVisitedEvent extends AlgorithmVertexEvent {
     public String toString() {
         return super.toString() + "VertexVisitedEvent (V: " + vertex + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Odwiedzanie wierzchołka: " + vertex.getV();
+    }
 }

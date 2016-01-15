@@ -19,4 +19,9 @@ public class VertexPickedEvent extends AlgorithmVertexEvent {
     public String toString() {
         return super.toString() + "VertexPickedEvent (V: " + vertex + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Wybranie wierzchołka: " + vertex.getV();
+    }
 }

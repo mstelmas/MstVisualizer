@@ -20,5 +20,10 @@ public class AddEdgeToMstEvent extends AlgorithmEdgeEvent {
     public String toString() {
         return super.toString() + "AddEdgeToMstEvent (Edge: " + getEdge() + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Dodanie krawędzi: " + getEdge() + " do MST";
+    }
 }
 

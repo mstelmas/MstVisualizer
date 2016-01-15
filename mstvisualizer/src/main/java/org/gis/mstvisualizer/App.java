@@ -13,6 +13,7 @@ import org.gis.mstvisualizer.Core.Algorithms.KruskalMST;
 import org.gis.mstvisualizer.Core.Algorithms.PrimMST;
 import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Graph.Vertex;
+import org.gis.mstvisualizer.Core.Utils;
 import org.gis.mstvisualizer.Visualizer.GraphVisualizer;
 
 import javax.swing.*;
@@ -36,7 +37,18 @@ public class App extends JFrame {
         };
 
         // TODO Possibility to choose a file
-        Graph<Vertex, Link> g = loadGraphFromFile("graph.txt");
+        Graph<Vertex, Link> graph = null;
+        try {
+            graph = Utils.loadGraphFromFile("graph.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("Cound not find a specified file!");
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final Graph<Vertex, Link> g = graph;
 
         JComboBox<String> algorithmList = new JComboBox<>(supportedAlgorithms);
         algorithmList.setLocation(0,100);
@@ -81,37 +93,37 @@ public class App extends JFrame {
         frame.setVisible(true);
     }
 
-    private static Graph<Vertex, Link> loadGraphFromFile(String file){
-        Graph<Vertex, Link> g = new UndirectedSparseGraph<Vertex, Link>(){};
-        Map<Integer, Vertex> vertices = new HashMap<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            for(String line; (line = br.readLine()) != null; ) {
-                String[] s = line.split(" ");
-                if(s.length == 3) {
-                    Integer i1 = Integer.parseInt(s[0]);
-                    Integer i2 = Integer.parseInt(s[1]);
-                    Double weight = Double.parseDouble(s[2]);
-                    if (!vertices.containsKey(i1)) {
-                        Vertex v1 = new Vertex(i1);
-                        vertices.put(i1, v1);
-                        g.addVertex(v1);
-                    }
-                    if (!vertices.containsKey(i2)) {
-                        Vertex v2 = new Vertex(i2);
-                        vertices.put(i2, v2);
-                        g.addVertex(v2);
-                    }
-                    g.addEdge(new Link(weight), vertices.get(i1), vertices.get(i2));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("IOException!");
-            e.printStackTrace();
-        }
-        return g;
-    }
+//    private static Graph<Vertex, Link> loadGraphFromFile(String file){
+//        Graph<Vertex, Link> g = new UndirectedSparseGraph<Vertex, Link>(){};
+//        Map<Integer, Vertex> vertices = new HashMap<>();
+//
+//        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+//            for(String line; (line = br.readLine()) != null; ) {
+//                String[] s = line.split(" ");
+//                if(s.length == 3) {
+//                    Integer i1 = Integer.parseInt(s[0]);
+//                    Integer i2 = Integer.parseInt(s[1]);
+//                    Double weight = Double.parseDouble(s[2]);
+//                    if (!vertices.containsKey(i1)) {
+//                        Vertex v1 = new Vertex(i1);
+//                        vertices.put(i1, v1);
+//                        g.addVertex(v1);
+//                    }
+//                    if (!vertices.containsKey(i2)) {
+//                        Vertex v2 = new Vertex(i2);
+//                        vertices.put(i2, v2);
+//                        g.addVertex(v2);
+//                    }
+//                    g.addEdge(new Link(weight), vertices.get(i1), vertices.get(i2));
+//                }
+//            }
+//        } catch (FileNotFoundException e) {
+//            System.out.println("File not found!");
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            System.out.println("IOException!");
+//            e.printStackTrace();
+//        }
+//        return g;
+//    }
 }

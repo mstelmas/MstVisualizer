@@ -19,4 +19,12 @@ public class DequeueEdgeEvent extends AlgorithmEdgeEvent {
     public String toString() {
         return super.toString() + "DequeueEdgeEvent (Edge: " + getEdge() + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+
+        final Link edge = getEdge();
+
+        return "Pobranie krawędzi: " + edge.getWeight() + " z kolejki";
+    }
 }

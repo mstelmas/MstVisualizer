@@ -18,4 +18,9 @@ public class EdgeVisitedEvent extends AlgorithmEdgeEvent {
     public String toString() {
         return super.toString() + "EdgeVisitedEvent (Edge: " + edge + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Odwiedzenie krawędzi: " + getEdge();
+    }
 }

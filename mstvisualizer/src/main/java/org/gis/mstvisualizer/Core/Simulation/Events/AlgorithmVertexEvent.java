@@ -29,4 +29,11 @@ public class AlgorithmVertexEvent extends AlgorithmEvent {
     public void onRevert() {
         this.vertex.setColor(this.vertexStartColor);
     }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+
 }

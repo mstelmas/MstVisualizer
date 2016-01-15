@@ -29,5 +29,11 @@ public class AlgorithmEdgeEvent extends AlgorithmEvent {
     public void onRevert() {
         this.edge.setColor(this.edgeStartColor);
     }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
 }
 

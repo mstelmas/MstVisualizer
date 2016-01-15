@@ -18,4 +18,9 @@ public class EdgePickedEvent extends AlgorithmEdgeEvent {
     public String toString() {
         return super.toString() + "EdgePickedEvent (Edge: " + edge + ")\n";
     }
+
+    @Override
+    public String getDescription() {
+        return "Wybranie krawędzi: " + getEdge();
+    }
 }

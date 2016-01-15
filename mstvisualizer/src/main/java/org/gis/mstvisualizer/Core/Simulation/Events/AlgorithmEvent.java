@@ -18,4 +18,6 @@ public abstract class AlgorithmEvent {
     public String toString() {
         return "AlgorithmEvent: ";
     }
+
+    public abstract String getDescription();
 }
