@@ -64,13 +64,6 @@ public final class GraphVisualizer {
 
 
 
-    /* Menu components */
-    private final JMenuBar menuBar = new JMenuBar();
-    private final JMenu fileMenu;
-    private final JMenuItem exitMenuItem, openGraphMenuItem;
-
-
-    private final JFileChooser fileChooser = new JFileChooser();
 
     private BasicVisualizationServer<Vertex, Link> vv;
 
@@ -142,35 +135,6 @@ public final class GraphVisualizer {
 
         rightInformationPanel.add(algorithmStatusPanel);
         rightInformationPanel.add(graphInformationPanel);
-
-
-
-
-        fileMenu = new JMenu("Plik");
-
-        openGraphMenuItem = new JMenuItem("Otwórz");
-        openGraphMenuItem.addActionListener((action -> {
-            final int returnValue = fileChooser.showOpenDialog(frame);
-
-            if(returnValue == JFileChooser.APPROVE_OPTION) {
-                final File file = fileChooser.getSelectedFile();
-
-                /* TODO: file loading */
-            }
-        }));
-
-
-
-        exitMenuItem = new JMenuItem("Zakończ");
-        exitMenuItem.addActionListener((action -> {
-            System.exit(0);
-        }));
-
-        fileMenu.add(openGraphMenuItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitMenuItem);
-
-        menuBar.add(fileMenu);
     }
 
     public void run() {
@@ -197,8 +161,6 @@ public final class GraphVisualizer {
         this.frame.getContentPane().add(algorithmStatusPanel, BorderLayout.PAGE_START);
 
         this.frame.getContentPane().add(rightInformationPanel, BorderLayout.EAST);
-
-        this.frame.setJMenuBar(menuBar);
 
         this.frame.pack();
         this.frame.setVisible(true);
