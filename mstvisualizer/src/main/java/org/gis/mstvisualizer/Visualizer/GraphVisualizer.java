@@ -52,6 +52,8 @@ public final class GraphVisualizer {
     private final JLabel graphMaxDegreeLabel;
     private final JLabel graphAvgDegreeLabel;
     private final JLabel graphConnectedComponentsLabel;
+    private JLabel graphNotUniqueWarningLabel;
+
     /* TODO Implement */
     //private final JLabel graphSelfLoopsCount;
 
@@ -118,6 +120,12 @@ public final class GraphVisualizer {
         graphConnectedComponentsLabel = new JLabel("Ilość spójnych składowych: " + connectedComponents.getCount());
 
 
+        final boolean isGraphUnique = Utils.checkGraphEdgesUniqueness(G);
+        if(!isGraphUnique) {
+            graphNotUniqueWarningLabel = new JLabel("UWAGA: Wagi krawędzi grafu nie są unikalne!");
+        }
+
+
         graphInformationPanel.setBorder(new TitledBorder(
                 new EtchedBorder(EtchedBorder.LOWERED),
                 "Graf"
@@ -127,6 +135,10 @@ public final class GraphVisualizer {
         graphInformationPanel.add(graphMaxDegreeLabel);
         graphInformationPanel.add(graphAvgDegreeLabel);
         graphInformationPanel.add(graphConnectedComponentsLabel);
+
+        if(!isGraphUnique) {
+            graphInformationPanel.add(graphNotUniqueWarningLabel);
+        }
 
 
         algorithmEventNameLabel = new JLabel();
