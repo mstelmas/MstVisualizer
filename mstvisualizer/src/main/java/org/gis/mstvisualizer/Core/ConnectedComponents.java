@@ -21,8 +21,8 @@ public class ConnectedComponents {
 
     public ConnectedComponents(final Graph<Vertex, Link> G) {
         marked = new boolean[G.getVertexCount()];
-        id = new int[G.getEdgeCount()];
-        size = new int[G.getEdgeCount()];
+        id = new int[G.getVertexCount()];
+        size = new int[G.getVertexCount()];
         vertices = G.getVertices();
 
         for (int i = 0; i < G.getVertexCount(); i++) {
