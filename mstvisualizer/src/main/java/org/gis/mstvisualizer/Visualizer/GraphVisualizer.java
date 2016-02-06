@@ -3,7 +3,6 @@ package org.gis.mstvisualizer.Visualizer;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
 import org.apache.commons.collections15.Transformer;
 import org.gis.mstvisualizer.Core.Algorithms.AlgorithmMST;
@@ -18,13 +17,12 @@ import org.gis.mstvisualizer.Core.Simulation.Storage.IAlgorithmEventStorage;
 import org.gis.mstvisualizer.Core.Utils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.io.File;
-import java.util.Collections;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public final class GraphVisualizer {
 
@@ -45,6 +43,8 @@ public final class GraphVisualizer {
     private final JButton firstStepButton = new JButton("<<");
     private final JButton leftStepButton = new JButton("<");
     private final JButton autoStepButton = new JButton("<AUTO>");
+    private boolean paused = true;
+    Timer timer = new Timer();
     private final JButton rightStepButton = new JButton(">");
     private final JButton lastStepButton = new JButton(">>");
     private final JLabel eventNameLabel = new JLabel();
@@ -64,6 +64,7 @@ public final class GraphVisualizer {
     private final JLabel mstEdgesCountLabel;
     private final JLabel mstWeightLabel;
     private final JLabel mstAlgorithmNameLabel;
+    private final JLabel mstStepsLabel;
 
     /* TODO Implement */
     //private final JLabel graphSelfLoopsCount;
@@ -101,8 +102,21 @@ public final class GraphVisualizer {
         });
 
         autoStepButton.addActionListener(event -> {
-            /* TODO */
+            if(paused) {
+                autoStepButton.setText("<PAUSE>");
+                paused = false;
+            }else{
+                autoStepButton.setText("<AUTO>");
+                paused = true;
+            }
+            autoStepButton.repaint();
         });
+        timer.schedule(new TimerTask() {
+            public void run() {
+                if(!paused)
+                    rightStepButton.doClick();
+            }
+        }, 0, 2*1000);
 
         rightStepButton.addActionListener(event -> {
             AlgorithmEvent algorithmEvent;
@@ -157,7 +171,7 @@ public final class GraphVisualizer {
         algorithmStatusPanel.add(algorithmStatusLabel);
         algorithmStatusPanel.add(algorithmEventNameLabel);
 
-
+        mstStepsLabel = new JLabel("Ilość kroków algorytmu: " + algorithmEventStorage.count());
         mstEdgesCountLabel = new JLabel("Ilość krawędzi: " + algorithmMST.count());
         mstWeightLabel = new JLabel("Całkowita waga: " + algorithmMST.getWeight());
         mstAlgorithmNameLabel = new JLabel("Algorytm: " + algorithmMST.getName());
@@ -168,6 +182,7 @@ public final class GraphVisualizer {
                 "MST"
         ));
         mstInformationPanel.add(mstAlgorithmNameLabel);
+        mstInformationPanel.add(mstStepsLabel);
         mstInformationPanel.add(mstEdgesCountLabel);
         mstInformationPanel.add(mstWeightLabel);
 
