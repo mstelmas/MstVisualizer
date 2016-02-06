@@ -36,6 +36,8 @@ public class App extends JFrame {
     private final JMenuBar menuBar = new JMenuBar();
     private final JMenu fileMenu;
     private final JMenuItem exitMenuItem, openGraphMenuItem;
+    private File file;
+    private Graph<Vertex, Link> g;
 
     private final JFileChooser fileChooser = new JFileChooser();
 
@@ -53,9 +55,16 @@ public class App extends JFrame {
             final int returnValue = fileChooser.showOpenDialog(this);
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-                final File file = fileChooser.getSelectedFile();
-
-                /* TODO: file loading */
+                file = fileChooser.getSelectedFile();
+                try {
+                    if(file != null)
+                        g = Utils.loadGraphFromFile(file.toString());
+                } catch (FileNotFoundException e) {
+                    System.out.println("Cound not find a specified file!");
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }));
 
@@ -80,7 +89,7 @@ public class App extends JFrame {
             e.printStackTrace();
         }
 
-        final Graph<Vertex, Link> g = graph;
+        g = graph;
 
         algorithmList.setEditable(false);
         algorithmList.addActionListener(e -> {
