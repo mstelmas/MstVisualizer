@@ -9,6 +9,7 @@ public class SimulationConstants {
 
     public final static Color EDGE_MST_COLOR = Color.BLUE;
     public final static Color EDGE_PICKED_COLOR = Color.CYAN;
+    public final static Color EDGE_SKIP_COLOR = Color.GRAY;
     public final static Color EDGE_VISITED_COLOR = Color.GREEN;
     public final static Color EDGE_ENQUEUE_COLOR = Color.DARK_GRAY;
     public final static Color EDGE_DEQUEUE_COLOR = Color.YELLOW;
