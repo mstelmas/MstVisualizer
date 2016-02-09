@@ -3,11 +3,11 @@ package org.gis.mstvisualizer.Core.Algorithms;
 import edu.uci.ics.jung.graph.Graph;
 import org.gis.mstvisualizer.Core.Graph.Link;
 import org.gis.mstvisualizer.Core.Graph.Vertex;
+import org.gis.mstvisualizer.Core.Simulation.Events.EdgeSkipEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.Mst.AddEdgeToMstEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.Queue.DequeueEdgeEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.Queue.EnqueueEdgeEvent;
 import org.gis.mstvisualizer.Core.Simulation.Events.VertexPickedEvent;
-import org.gis.mstvisualizer.Core.Simulation.Events.VertexVisitedEvent;
 
 import java.util.Collection;
 import java.util.PriorityQueue;
@@ -54,6 +54,8 @@ public class PrimMST extends AlgorithmMST {
             final int w = ((Vertex)G.getEndpoints(e).getSecond()).getV();
 
             if(marked[v] && marked[w]) {
+                 /* EVENT */
+                algorithmEventStorage.addEvent(new EdgeSkipEvent(e));
                 continue;
             }
 
@@ -82,8 +84,8 @@ public class PrimMST extends AlgorithmMST {
     private void scan(final Graph G, final int v) {
         marked[v] = true;
 
-        /* EVENT */
-        algorithmEventStorage.addEvent(new VertexVisitedEvent(getVertexById(v)));
+//        /* EVENT */
+//        algorithmEventStorage.addEvent(new VertexVisitedEvent(getVertexById(v)));
 
         for(Object neighbor : G.getNeighbors(getVertexById(v))) {
             if(!marked[((Vertex)neighbor).getV()]) {
